@@ -2,50 +2,554 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>ourNET · Layer‑0 Dreieck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌀 reCALL · PIPELINE-UNIVERSUM · ourNET · Layer-0</title>
 
 <style>
-    body {
-        font-family: monospace;
-        background: #f5f5f5;
-        color: #222;
-        padding: 40px;
-        text-align: center;
-    }
-    suite {
-        display: block;
-        font-size: 32px;
-        margin-bottom: 20px;
-        font-weight: bold;
-    }
-    slide {
-        display: block;
-        font-size: 18px;
-        margin-bottom: 20px;
-        opacity: 0.7;
-    }
-    .puzzle {
-        font-size: 26px;
-        padding: 20px;
-        border: 2px dashed #444;
-        display: inline-block;
-        margin-top: 20px;
-    }
+:root {
+    --bg: #0a0a12;
+    --fg: #0ff;
+    --gold: #ffd700;
+    --p0: #ff6b6b;
+    --p1: #6bff6b;
+    --p2: #6b6bff;
+    --p4: #ffd93d;
+    --pe: #ff44ff;
+    --pipe: #00ccff;
+    --layer0: #ff00ff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Consolas', monospace;
+    min-height: 100vh;
+    padding: 10px;
+}
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(10,10,20,0.7);
+    border: 1px solid rgba(255,170,0,0.05);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+}
+.header {
+    text-align: center;
+    border-bottom: 1px solid rgba(255,170,0,0.05);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+.header h1 {
+    font-size: 28px;
+    background: linear-gradient(90deg, #ffaa00, #ff66ff, #00ccff, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 4px;
+}
+.header .sub {
+    color: #445555;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+.header .sub span { color: var(--gold); }
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+@media (max-width: 1100px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+
+.panel {
+    background: rgba(10,10,20,0.4);
+    border: 1px solid rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 12px;
+}
+.panel h2 {
+    color: var(--gold);
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+}
+.panel button {
+    background: rgba(20,35,35,0.2);
+    color: #668888;
+    border: 1px solid rgba(255,255,255,0.02);
+    padding: 4px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 9px;
+    transition: all 0.3s;
+    margin: 2px;
+}
+.panel button:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
+.panel button.gold { color: var(--gold); border-color: rgba(255,170,0,0.05); }
+.panel button.red { color: #ff4444; border-color: rgba(255,68,68,0.05); }
+.panel button.green { color: var(--fg); border-color: rgba(0,255,136,0.05); }
+.panel button.p0 { color: var(--p0); border-color: rgba(255,107,107,0.05); }
+.panel button.p1 { color: var(--p1); border-color: rgba(107,255,107,0.05); }
+.panel button.p2 { color: var(--p2); border-color: rgba(107,107,255,0.05); }
+.panel button.p4 { color: var(--p4); border-color: rgba(255,217,61,0.05); }
+.panel button.pe { color: var(--pe); border-color: rgba(255,68,255,0.05); }
+.panel button.pipe { color: var(--pipe); border-color: rgba(0,204,255,0.05); }
+.panel button.layer0 { color: var(--layer0); border-color: rgba(255,0,255,0.05); }
+
+#output {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 60px;
+    font-size: 10px;
+    line-height: 1.4;
+    border: 1px solid rgba(255,255,255,0.02);
+    margin-top: 8px;
+    white-space: pre-wrap;
+    color: #88ddbb;
+    font-family: monospace;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.status {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 10px;
+    margin-top: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    font-size: 9px;
+    color: #445555;
+    border: 1px solid rgba(255,255,255,0.01);
+    flex-wrap: wrap;
+}
+.status span { color: #88ddbb; }
+
+.footer {
+    text-align: center;
+    margin-top: 12px;
+    padding: 10px;
+    color: #222;
+    font-size: 8px;
+    letter-spacing: 2px;
+    border-top: 1px solid rgba(255,255,255,0.01);
+}
+.footer span { color: var(--gold); }
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px;
+    margin-top: 6px;
+}
+.metric {
+    background: #0e0e1a;
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+    border: 1px solid #1a1a2a;
+}
+.metric .label { color: #666; font-size: 6px; text-transform: uppercase; }
+.metric .value { font-size: 11px; font-weight: bold; }
+.metric.p0 .value { color: var(--p0); }
+.metric.p1 .value { color: var(--p1); }
+.metric.p2 .value { color: var(--p2); }
+.metric.p4 .value { color: var(--p4); }
+
+.pipe-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px;
+    font-size: 8px;
+    margin-top: 4px;
+}
+.pipe-step {
+    background: #0e0e1a;
+    border: 1px solid #1a1a2a;
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+}
+.pipe-step .level { color: var(--gold); font-weight: bold; }
+.pipe-step .label { color: #666; font-size: 6px; }
+.pipe-step.active { border-color: var(--pipe); background: rgba(0,204,255,0.05); }
+
+.recall-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 4px;
+    font-size: 8px;
+    margin-top: 4px;
+}
+.recall-item {
+    background: #0e0e1a;
+    border: 1px solid #1a1a2a;
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+}
+.recall-item .name { color: var(--gold); font-weight: bold; }
+.recall-item .status { color: #666; font-size: 6px; }
+.recall-item.active { border-color: var(--layer0); background: rgba(255,0,255,0.05); }
 </style>
 </head>
-
 <body>
 
-<suite>ourNET</suite>
-<slide>dimension.flow()</slide>
+<div class="container">
 
-<div class="puzzle" data-piece="ourNET">
-    ((( ourNET )))
+<div class="header">
+    <h1>🌀 reCALL · PIPELINE-UNIVERSUM · ourNET · Layer-0</h1>
+    <div class="sub">1 · 2 · 3 · a · b · move · x · y · z · <span>P0→P1→P2→P4→Pe</span> · <span>QI · coreScan · Narrativ</span></div>
+</div>
+
+<div class="grid">
+
+    <!-- ===== PANEL 1: PIPELINE ENGINE ===== -->
+    <div class="panel">
+        <h2>🔧 PIPELINE · 3 → 9 → 27 → 81</h2>
+        <button class="p0" onclick="pipeStep('P0')">P0 wake</button>
+        <button class="p1" onclick="pipeStep('P1')">P1 melt</button>
+        <button class="p2" onclick="pipeStep('P2')">P2 merge</button>
+        <button class="p4" onclick="pipeStep('P4')">P4 start</button>
+        <button class="pe" onclick="pipeStep('Pe')">Pe finalize</button>
+        <button class="pipe" onclick="pipeNext()">⛭ NEXT</button>
+        <button class="gold" onclick="pipeRun()">▶ RUN</button>
+        <button class="red" onclick="pipeReset()">⟲ RESET</button>
+
+        <div class="pipe-status" id="pipe-status">
+            <div class="pipe-step active"><div class="level">3</div><div class="label">Grund</div></div>
+            <div class="pipe-step"><div class="level">9</div><div class="label">Erweiterung</div></div>
+            <div class="pipe-step"><div class="level">27</div><div class="label">Motor</div></div>
+            <div class="pipe-step"><div class="level">81</div><div class="label">⭐ Vollendung</div></div>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric p0"><div class="label">P0</div><div class="value" id="p0-count">0</div></div>
+            <div class="metric p1"><div class="label">P1</div><div class="value" id="p1-count">0</div></div>
+            <div class="metric p2"><div class="label">P2</div><div class="value" id="p2-count">0</div></div>
+            <div class="metric p4"><div class="label">P4</div><div class="value" id="p4-count">0</div></div>
+        </div>
+
+        <div id="output">🌀 reCALL · PIPELINE bereit · 3 → 9 → 27 → 81</div>
+    </div>
+
+    <!-- ===== PANEL 2: ourNET · Layer-0 ===== -->
+    <div class="panel">
+        <h2>🧩 ourNET · Layer-0 Dreieck</h2>
+        <button class="layer0" onclick="layer0Call()">🌀 LAYER-0 CALL</button>
+        <button class="gold" onclick="layer0Flow()">🌊 FLOW</button>
+        <button class="red" onclick="layer0Reset()">⟲ RESET</button>
+        <div id="layer0-output" style="margin-top:6px;background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;font-size:11px;color:#88ddbb;min-height:50px;">
+            ((( ourNET ))) · Layer-0 Dreieck · bereit
+        </div>
+
+        <h2 style="margin-top:10px;">📊 QI · coreScan · Narrativ</h2>
+        <button onclick="runQI()">🔍 QI SCAN</button>
+        <button onclick="runNarrativ()">📖 NARRATIV</button>
+        <button onclick="runAll()">⚡ ALL</button>
+        <div id="qi-output" style="margin-top:4px;background:rgba(0,0,0,0.3);border-radius:4px;padding:6px;font-size:9px;color:#88ddbb;min-height:30px;">QI · coreScan · Narrativ bereit</div>
+    </div>
+
+    <!-- ===== PANEL 3: reCALL · STATUS ===== -->
+    <div class="panel">
+        <h2>🔄 reCALL · SCHLEIFE</h2>
+        <button class="gold" onclick="recallStart()">▶ START</button>
+        <button class="red" onclick="recallStop()">⏸ STOP</button>
+        <button onclick="recallStep()">⏭ STEP</button>
+        <button onclick="recallReset()">⟲ RESET</button>
+
+        <div class="recall-status" id="recall-status">
+            <div class="recall-item active"><div class="name">reCALL</div><div class="status">● bereit</div></div>
+            <div class="recall-item"><div class="name">PIPELINE</div><div class="status">⏳</div></div>
+            <div class="recall-item"><div class="name">ourNET</div><div class="status">⏳</div></div>
+            <div class="recall-item"><div class="name">NARRATIV</div><div class="status">⏳</div></div>
+        </div>
+
+        <div id="recall-output" style="margin-top:6px;background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;font-size:10px;color:#88ddbb;min-height:60px;max-height:120px;overflow-y:auto;">
+            🔄 reCALL · Schleife wartet
+        </div>
+
+        <div class="status" style="margin-top:8px;">
+            <span>🌀 CYC: <span id="recall-cycle">0</span></span>
+            <span>📦 MOD: <span id="recall-modules">0</span></span>
+            <span>🧩 LAYER: <span id="recall-layer">0</span></span>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer"><span>🌀</span> reCALL · PIPELINE-UNIVERSUM · ourNET · Layer-0 · <span>wieimmer4u</span></div>
+
 </div>
 
 <script>
-// Layer‑0 Slot‑Start
-console.log("ourNET geladen: Layer‑0 Dreieck aktiv");
+// ============================================================
+// 1. PIPELINE9 · 3 → 9 → 27 → 81
+// ============================================================
+const pipeState = {
+    level: 3,
+    counts: { P0: 0, P1: 0, P2: 0, P4: 0, Pe: 0 },
+    steps: []
+};
 
-// Minimaler Slot‑Flow
-function SLOT_FLOW() {
+function logPipe(msg) {
+    document.getElementById('output').textContent = msg;
+}
+
+function updatePipeUI() {
+    document.getElementById('p0-count').textContent = pipeState.counts.P0;
+    document.getElementById('p1-count').textContent = pipeState.counts.P1;
+    document.getElementById('p2-count').textContent = pipeState.counts.P2;
+    document.getElementById('p4-count').textContent = pipeState.counts.P4;
+
+    const levels = [3, 9, 27, 81];
+    const steps = document.querySelectorAll('.pipe-step');
+    steps.forEach((step, i) => {
+        step.classList.toggle('active', pipeState.level >= levels[i]);
+    });
+}
+
+function pipeStep(name) {
+    pipeState.counts[name] = (pipeState.counts[name] || 0) + 1;
+    pipeState.steps.push({ name, level: pipeState.level, time: Date.now() });
+    logPipe(`⚡ ${name} · Level ${pipeState.level} · #${pipeState.counts[name]}`);
+    updatePipeUI();
+}
+
+function pipeNext() {
+    const levels = [3, 9, 27, 81];
+    const idx = levels.indexOf(pipeState.level);
+    pipeState.level = levels[(idx + 1) % levels.length];
+    logPipe(`⛭ PIPELINE → Level ${pipeState.level}`);
+    updatePipeUI();
+}
+
+function pipeRun() {
+    pipeStep('P0');
+    setTimeout(() => pipeStep('P1'), 300);
+    setTimeout(() => pipeStep('P2'), 600);
+    setTimeout(() => pipeStep('P4'), 900);
+    setTimeout(() => pipeStep('Pe'), 1200);
+    logPipe('⛭ PIPELINE RUN · 3→9→27→81');
+}
+
+function pipeReset() {
+    pipeState.level = 3;
+    pipeState.counts = { P0: 0, P1: 0, P2: 0, P4: 0, Pe: 0 };
+    pipeState.steps = [];
+    logPipe('⟲ PIPELINE zurückgesetzt');
+    updatePipeUI();
+}
+
+// ============================================================
+// 2. ourNET · Layer-0 Dreieck
+// ============================================================
+const layer0State = {
+    aktiv: false,
+    flow: 0,
+    cycles: 0
+};
+
+function layer0Call() {
+    layer0State.aktiv = true;
+    layer0State.cycles++;
+    document.getElementById('layer0-output').innerHTML =
+        `🧩 ourNET · Layer-0 Dreieck · CALL\n` +
+        `((( ourNET ))) · dimension.flow() · ${layer0State.cycles}`;
+    document.getElementById('recall-layer').textContent = layer0State.cycles;
+    log('🧩 LAYER-0 CALL · ourNET aktiv', 'layer0');
+}
+
+function layer0Flow() {
+    layer0State.flow = (layer0State.flow + 0.1) % 1;
+    document.getElementById('layer0-output').innerHTML =
+        `🌊 ourNET · Flow\n` +
+        `dimension.flow() = ${layer0State.flow.toFixed(2)}\n` +
+        `((( ourNET ))) · Layer-0 · fließend`;
+    log(`🌊 FLOW · ${layer0State.flow.toFixed(2)}`, 'layer0');
+}
+
+function layer0Reset() {
+    layer0State.aktiv = false;
+    layer0State.flow = 0;
+    document.getElementById('layer0-output').innerHTML =
+        '((( ourNET ))) · Layer-0 Dreieck · zurückgesetzt';
+    log('⟲ LAYER-0 zurückgesetzt', 'layer0');
+}
+
+// ============================================================
+// 3. QI · coreScan · Narrativ
+// ============================================================
+function runQI() {
+    const core = {
+        id: 'CORE',
+        stable: true,
+        ready: true,
+        respo360: { value: 0.618, phi: true }
+    };
+    const qi = {
+        scan: (c) => ({ ...c, qi: c.stable ? 0.9 : 0.3, iqq: c.ready ? 0.8 : 0.4 })
+    };
+    const result = qi.scan(core);
+    document.getElementById('qi-output').textContent =
+        `🔍 QI SCAN\n` +
+        `ID: ${result.id}\n` +
+        `QI: ${result.qi}\n` +
+        `IQQ: ${result.iqq}\n` +
+        `Stable: ${result.stable}\n` +
+        `Ready: ${result.ready}`;
+    log('🔍 QI SCAN ausgeführt', 'ok');
+}
+
+function runNarrativ() {
+    const kandidaten = ['OS', 'BOOT', 'iki1uc', '243', 'DOOR', 'DOO', 'RESPO', 'NC.engine', 'SCORE', 'WETTE', 'SLIDE', 'AXIOM'];
+    const shuffled = kandidaten.sort(() => Math.random() - 0.5);
+    const trio = shuffled.slice(0, 3);
+    const gewicht = (Math.random() * 2 + 1).toFixed(1);
+    document.getElementById('qi-output').textContent =
+        `📖 NARRATIV\n` +
+        `Triplet: ${trio.join(' ↔ ')}\n` +
+        `Gewicht: ${gewicht}\n` +
+        `Status: ${gewicht > 2 ? '🔺 stark' : '🔻 leicht'}`;
+    log(`📖 NARRATIV · ${trio.join(' ↔ ')}`, 'ok');
+}
+
+function runAll() {
+    runQI();
+    setTimeout(runNarrativ, 200);
+    log('⚡ ALL · QI + Narrativ', 'ok');
+}
+
+// ============================================================
+// 4. reCALL · SCHLEIFE
+// ============================================================
+const recallState = {
+    running: false,
+    cycle: 0,
+    modules: 0,
+    timer: null
+};
+
+function recallStart() {
+    if (recallState.running) return;
+    recallState.running = true;
+    recallState.timer = setInterval(() => {
+        recallState.cycle++;
+        recallState.modules = (recallState.modules + 1) % 10;
+        document.getElementById('recall-cycle').textContent = recallState.cycle;
+        document.getElementById('recall-modules').textContent = recallState.modules;
+
+        // reCALL Step
+        const steps = ['P0', 'P1', 'P2', 'P4', 'Pe'];
+        const step = steps[recallState.cycle % 5];
+        pipeStep(step);
+
+        // ourNET Flow
+        layer0Flow();
+
+        // Status-Update
+        const items = document.querySelectorAll('.recall-item');
+        items.forEach((item, i) => {
+            item.classList.toggle('active', i === recallState.cycle % 4);
+        });
+
+        document.getElementById('recall-output').innerHTML =
+            `🔄 reCALL · Zyklus ${recallState.cycle}\n` +
+            `📦 Module: ${recallState.modules}\n` +
+            `🧩 Layer: ${layer0State.cycles}\n` +
+            `⚡ Step: ${step}\n` +
+            `🌊 Flow: ${layer0State.flow.toFixed(2)}`;
+
+        log(`🔄 reCALL #${recallState.cycle} · ${step} · Flow ${layer0State.flow.toFixed(2)}`, 'pipe');
+
+    }, 2000);
+    document.getElementById('recall-output').innerHTML = '▶ reCALL · Schleife läuft';
+    log('▶ reCALL gestartet', 'ok');
+}
+
+function recallStop() {
+    if (recallState.timer) {
+        clearInterval(recallState.timer);
+        recallState.timer = null;
+    }
+    recallState.running = false;
+    document.getElementById('recall-output').innerHTML = '⏸ reCALL · Schleife pausiert';
+    log('⏸ reCALL pausiert', 'ok');
+}
+
+function recallStep() {
+    if (recallState.running) return;
+    recallState.cycle++;
+    recallState.modules = (recallState.modules + 1) % 10;
+    document.getElementById('recall-cycle').textContent = recallState.cycle;
+    document.getElementById('recall-modules').textContent = recallState.modules;
+
+    const steps = ['P0', 'P1', 'P2', 'P4', 'Pe'];
+    const step = steps[recallState.cycle % 5];
+    pipeStep(step);
+    layer0Flow();
+
+    document.getElementById('recall-output').innerHTML =
+        `⏭ reCALL · Step ${recallState.cycle}\n` +
+        `📦 Module: ${recallState.modules}\n` +
+        `⚡ Step: ${step}\n` +
+        `🌊 Flow: ${layer0State.flow.toFixed(2)}`;
+    log(`⏭ reCALL Step ${recallState.cycle} · ${step}`, 'ok');
+}
+
+function recallReset() {
+    recallStop();
+    recallState.cycle = 0;
+    recallState.modules = 0;
+    document.getElementById('recall-cycle').textContent = '0';
+    document.getElementById('recall-modules').textContent = '0';
+    document.getElementById('recall-output').innerHTML = '⟲ reCALL · zurückgesetzt';
+    document.querySelectorAll('.recall-item').forEach(el => el.classList.remove('active'));
+    document.querySelector('.recall-item:first-child').classList.add('active');
+    log('⟲ reCALL zurückgesetzt', 'ok');
+}
+
+// ============================================================
+// 5. LOG
+// ============================================================
+function log(msg, type = 'ok') {
+    const output = document.getElementById('output');
+    const time = new Date().toLocaleTimeString();
+    output.textContent = `[${time}] ${msg}`;
+}
+
+// ============================================================
+// 6. TASTATUR
+// ============================================================
+const keys = {
+    '1': () => pipeStep('P0'), '2': () => pipeStep('P1'),
+    '3': () => pipeStep('P2'), '4': () => pipeStep('P4'),
+    '5': () => pipeStep('Pe'), '6': pipeNext,
+    '7': pipeRun, '8': pipeReset,
+    'q': runQI, 'n': runNarrativ, 'a': runAll,
+    'l': layer0Call, 'f': layer0Flow, 'r': layer0Reset,
+    's': recallStart, 't': recallStop, 'x': recallReset
+};
+
+document.addEventListener('keydown', (e) => {
+    const fn = keys[e.key];
+    if (fn) fn(e);
+});
+
+// ============================================================
+// 7. INIT
+// ============================================================
+updatePipeUI();
+log('🌀 reCALL · PIPELINE-UNIVERSUM · ourNET · Layer-0 · geladen', 'ok');
+console.log('⌨️  1=P0 2=P1 3=P2 4=P4 5=Pe 6=NEXT 7=RUN 8=RESET');
+console.log('    q=QI n=Narrativ a=ALL  l=Layer0 f=Flow r=Reset');
+console.log('    s=Start t=Stop x=Reset recall');
+</script>
+
+</body>
+</html>
