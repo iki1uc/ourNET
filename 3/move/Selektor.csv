@@ -1,0 +1,9 @@
+async function loadRAW(path){
+    const text = await fetch(path).then(r => r.text());
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    return rows;
+}
+const achse = await loadRAW("./achse-quelle-7.csv");
+const modul = await loadRAW("./modul-rel-0.csv");
+const axiom = await loadRAW("./axiom-dreieck-6.csv");
+const pos = await loadRAW("./pos-achse-0.csv");

@@ -1,0 +1,12 @@
+function renderList(id, data){
+    const el = document.getElementById(id);
+    el.innerHTML = "";
+
+    data.forEach(d => {
+        const div = document.createElement("div");
+        div.textContent = JSON.stringify(d);
+        div.style.padding = "6px";
+        div.style.borderBottom = "1px solid #333";
+        el.appendChild(div);
+    });
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>PIPEBUILD · Epochen-Viewer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+  body {
+    background:#000;
+    color:#7dd3fc;
+    font-family:monospace;
+    margin:0;
+    padding:20px;
+  }
+
+  h1 {
+    color:#00eaff;
+    text-shadow:0 0 12px #00eaff;
+    margin-bottom:20px;
+  }
+
+  .epoch {
+    border:1px solid #0a1a2a;
+    background:#0b1220;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:6px;
+  }
+
+  .epoch h2 {
+    color:#ffaa00;
+    margin:0 0 10px 0;
+  }
+
+  .entry {
+    padding:6px 0;
+    border-bottom:1px solid #1f2937;
+  }
+
+  button {
+    background:#00eaff;
+    color:#000;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    margin-bottom:20px;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>PIPEBUILD · Epochen-Viewer</h1>
+
+<button id="load">Epochen laden</button>
+
+<div id="epochen"></div>
+
+<script type="module">
+
+import { loadRAW } from "./loader.csv";
+import { bindRAW } from "./binder.js";
+
+async function loadEpochen(){
+
+    const achse = await loadRAW("./achse-quelle-7.csv");
+    const modul = await loadRAW("./modul-rel-0.csv");
+    const axiom = await loadRAW("./axiom-dreieck-6.csv");
+    const pos = await loadRAW("./pos-achse-0.csv");
+
+    const epochenDiv = document.getElementById("epochen");
+    epochenDiv.innerHTML = "";
+
+    // ⭐ Epoche 1: Achsen
+    const ep1 = document.createElement("div");
+    ep1.className = "epoch";
+    ep1.innerHTML = "<h2>Epoche 1 · Achsen</h2>";
+    achse.forEach(a => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.textContent = "Achse: " + a.join(" → ");
+        ep1.appendChild(div);
+    });
+    epochenDiv.appendChild(ep1);
+
+    // ⭐ Epoche 2: Module
+    const ep2 = document.createElement("div");
+    ep2.className = "epoch";
+    ep2.innerHTML = "<h2>Epoche 2 · Module</h2>";
+    modul.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.textContent = "Modul: " + m.join(" → ");
+        ep2.appendChild(div);
+    });
+    epochenDiv.appendChild(ep2);
+
+    // ⭐ Epoche 3: Axiome
+    const ep3 = document.createElement("div");
+    ep3.className = "epoch";
+    ep3.innerHTML = "<h2>Epoche 3 · Axiome</h2>";
+    axiom.forEach(ax => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.textContent = "Axiom: " + ax.join(" → ");
+        ep3.appendChild(div);
+    });
+    epochenDiv.appendChild(ep3);
+
+    // ⭐ Epoche 4: Bindungen
+    const ep4 = document.createElement("div");
+    ep4.className = "epoch";
+    ep4.innerHTML = "<h2>Epoche 4 · Bindungen</h2>";
+
+    const bindung = bindRAW(
+        achse.map(a => a[0]),
+        modul.map(m => m[1])
+    );
+
+    bindung.forEach(b => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.textContent = `Bindung: ${b.from} → ${b.to}`;
+        ep4.appendChild(div);
+    });
+
+    epochenDiv.appendChild(ep4);
+
+    // ⭐ Epoche 5: Positionen
+    const ep5 = document.createElement("div");
+    ep5.className = "epoch";
+    ep5.innerHTML = "<h2>Epoche 5 · Positionen</h2>";
+    pos.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.textContent = "Position: " + p.join(" → ");
+        ep5.appendChild(div);
+    });
+    epochenDiv.appendChild(ep5);
+}
+
+document.getElementById("load").onclick = loadEpochen;
+
+</script>
+
+</body>
+</html>

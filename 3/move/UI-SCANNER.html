@@ -1,0 +1,57 @@
+window.qi_scan = () => {
+    const core = coreScan();
+    const result = QI.scan(core);
+    document.getElementById("out").innerText =
+        JSON.stringify(result, null, 2);
+};
+<button onclick="qi_scan()">QI · Bewertung starten</button>
+import { QI } from "./QI.js";
+
+window.runQI = () => {
+    const core = coreScan();
+    const out = QI.scan(core);
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+<button onclick="runQI()">QI · IQQ · Bewertung</button>
+window.qi_os = () => {
+    const out = QI.scan({ id:"OS", core:true, fn:true, stable:true });
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+<button onclick="qi_os()">QI · OS</button>
+window.qi_pipe = () => {
+    const core = coreScan();
+    const out = QI.scan(P4.run(core));
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+<button onclick="qi_pipe()">QI · Pipeline</button>
+window.qi_respo = () => {
+    const core = coreScan();
+    const out = QI.scan(core.respo360);
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+<button onclick="qi_respo()">QI · RESPO</button>
+window.qi_404 = () => {
+    const out = QI.scan({ id:"404", stable:false, fn:false });
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+window.qi_stage = () => {
+    const out = QI.scan({ id:"STAGE", core:true, fn:true, ready:true });
+    document.getElementById("out").innerText =
+        JSON.stringify(out, null, 2);
+};
+export function QI_CSV(row){
+    return {
+        id: row[0],
+        value: row[1],
+        fluid: row[2] > 50 ? "FLÜSSIG" : "TROCKEN",
+        degree: row[3] + "°",
+        percent: row[4] + "%",
+        ready: row[5] === "1",
+        timestamp: Date.now()
+    };
+}

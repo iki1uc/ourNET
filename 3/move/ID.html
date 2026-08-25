@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PIPEBUILD — ID</title>
+<meta charset="UTF-8">
+
+<style>
+body { background:#000; color:#0f0; font-family:Consolas; padding:20px; }
+h1, h2, h3 { color:#6cf; }
+pre { background:#111; border:1px solid #333; padding:12px; }
+a { color:#6cf; }
+table { border-collapse:collapse; width:100%; margin-top:12px; }
+td, th { border:1px solid #333; padding:6px; }
+.status-ok { color:#0f0; }
+.status-warn { color:#ff0; }
+.status-err { color:#f00; }
+.module-list li { margin-bottom:6px; }
+</style>
+
+</head>
+
+<body>
+
+<h1>PIPEBUILD — SYSTEM ID</h1>
+
+<section>
+<b>ID:</b> PIPEBUILD-CORE<br>
+<b>instance:</b> iki1uc<br>
+<b>master:</b> MASTER-KERN<br>
+<b>status:</b> <span class="status-ok">BUILD-READY</span><br>
+
+<pre>
+BUILD-KONSTELLATION = X / GEO / META
+BUILD-AXIS = 3 / 4 / 6 / 27
+TMP = aktiv
+ROM = aktiv
+BUILD-FREQ = 12e
+BUILD-STATE = stabil
+</pre>
+</section>
+
+<hr>
+
+<h2>BUILD-MODULE — AKTIV</h2>
+<ul class="module-list">
+  <li>✔ <a href="iki1uc.pipe.index.html">PIPE INDEX</a> — Build-Entry</li>
+  <li>✔ <a href="pipe.bind.index.html">PIPE BIND</a> — Bindungs-Achse</li>
+  <li>✔ <a href="pipe.class.index.html">PIPE CLASS</a> — Build-Typen</li>
+  <li>✔ <a href="pipe.geo.index.html">PIPE GEO</a> — Geometrie</li>
+  <li>✔ <a href="pipe.meta.index.html">PIPE META</a> — Meta-Kontext</li>
+  <li>✔ <a href="pipe.weight.index.html">PIPE WEIGHT</a> — Build-Gewichtung</li>
+  <li>✔ <a href="pipe.stable.index.html">PIPE STABLE</a> — Stabilität</li>
+  <li>✔ <a href="pipe.hotswap.index.html">PIPE HOTSWAP</a> — TMP↔ROM</li>
+  <li>✔ <a href="pipe.overdrive.index.html">PIPE OVERDRIVE</a> — Build-Leistung</li>
+</ul>
+
+<hr>
+
+<h2>BUILD-ACHSEN (CSV)</h2>
+
+<h3>Achse-Zahl (3)</h3>
+<pre>achse-zahl-3.csv geladen</pre>
+
+<h3>Axiom-Dreieck (6)</h3>
+<pre>axiom-dreieck-6.csv geladen</pre>
+
+<h3>Mechanismus-Zweck (4)</h3>
+<pre>mechanismus-zweck-4.csv geladen</pre>
+
+<hr>
+
+<h2>BUILD-STATUS — BIND / GEO / META</h2>
+
+<table>
+<tr><th>Modul</th><th>BIND</th><th>GEO</th><th>META</th><th>STABLE</th></tr>
+
+<tr><td>PIPE INDEX</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE BIND</td><td class="status-ok">OK</td><td class="status-warn">WARN</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE CLASS</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-warn">META-MISS</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE GEO</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE META</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-warn">META-WARN</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE WEIGHT</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE STABLE</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">STABLE</td></tr>
+<tr><td>PIPE HOTSWAP</td><td class="status-ok">OK</td><td class="status-warn">TMP-WARN</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+<tr><td>PIPE OVERDRIVE</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+
+</table>
+
+<hr>
+
+<h2>BUILD-FAILS (gültig)</h2>
+<ul>
+  <li>B‑01 — fehlende Bind-Achse</li>
+  <li>B‑02 — fehlende Geo-Achse</li>
+  <li>B‑03 — fehlende Meta-Achse</li>
+  <li>B‑04 — TMP nicht geladen</li>
+  <li>B‑05 — ROM nicht geladen</li>
+  <li>B‑06 — Build-Wurzel (27) fehlt</li>
+  <li>B‑07 — Build-Score fehlt</li>
+  <li>B‑08 — Build-Stabilität fehlt</li>
+</ul>
+
+<hr>
+
+<h2>START</h2>
+<p>
+PIPEBUILD ist der Baukern des Systems.<br>
+Diese ID-Seite zeigt alle aktiven BUILD-Module, Achsen und Mechanismen.<br>
+Sie dient als <b>Root-Identität</b> für den gesamten Build-Prozess.
+</p>
+
+</body>
+</html>
