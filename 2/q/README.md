@@ -1,18 +1,23 @@
-# ID / AUTO / RAW – Core Info
+# API – Durchlassachse · iki1uc
 
-**ID**  
-Eindeutiger Schlüssel für jeden Raum, jedes Modul und jede Datei.  
-Wird genutzt, um LOAD, SAVE, PIPE und AUTO eindeutig zuzuordnen.
+**API**  
+Die Durchlassachse zwischen allen Modulen.  
+AUTO sendet → API empfängt → API gibt weiter.
 
 **AUTO**  
-Automatischer Ablauf: lädt, bewertet, speichert und springt zum nächsten Raum.  
-AUTO hält das System aktiv und synchron.
+Erzeugt RESPO (axis, orbit, pulse) und übergibt an API.
 
 **RAW**  
-Unverarbeitete Daten (ANKER.raw).  
-Basis für Räume, Module und AUTO‑Zustände.
+Unverarbeitete Basisdaten (ANKER.raw).  
+API kann RAW direkt lesen oder weiterreichen.
+
+**ID**  
+Eindeutiger Raumname.  
+API nutzt ID, um Module wie iki1uc, NC.sync, Fusion oder Drift anzusteuern.
+
+**iki1uc**  
+Modul‑Container.  
+API ruft Funktionen darin auf, wenn AUTO neue RESPO liefert.
 
 Kurz:  
-ID bestimmt *was*,  
-RAW bestimmt *was drin ist*,  
-AUTO bestimmt *was als Nächstes passiert*.
+AUTO erzeugt → API leitet → Module reagieren.
